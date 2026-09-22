@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents Explained</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top">🤖 AI Agents</a>
+    <ul>
+      <li><a href="#what">What</a></li>
+      <li><a href="#loop">The loop</a></li>
+      <li><a href="#parts">Components</a></li>
+      <li><a href="#patterns">Patterns</a></li>
+      <li><a href="#uses">Use cases</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <button id="themeBtn" aria-label="Toggle theme">🌓 Theme</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="tag">A friendly introduction</span>
+    <h1>AI agents: models that<br>don't just answer, but act.</h1>
+    <p>An AI agent is a language model placed in a loop: it gets a goal, decides what to do,
+       uses tools, looks at the results, and keeps going until the job is done.</p>
+    <div class="cta">
+      <a class="btn primary" href="#loop">See an agent think ▶</a>
+      <a class="btn" href="#what">Start from basics</a>
+    </div>
+  </div>
+</header>
+
+<section id="what">
+  <div class="wrap">
+    <h2>Chatbot vs. agent</h2>
+    <p class="lead">Both use the same kind of model. The difference is autonomy: a chatbot replies once;
+       an agent works through many steps toward a goal.</p>
+    <div class="compare">
+      <div class="card">
+        <h3>💬 Chatbot</h3>
+        <ul>
+          <li>One question → one answer</li>
+          <li>Knows only what's in its training and the prompt</li>
+          <li>You do the follow-up work</li>
+          <li>Can't change anything in the world</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🤖 Agent</h3>
+        <ul>
+          <li>One goal → many steps</li>
+          <li>Looks things up, reads files, calls APIs</li>
+          <li>Checks its own results and corrects course</li>
+          <li>Takes real actions (with guardrails)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="loop">
+  <div class="wrap">
+    <h2>The agent loop</h2>
+    <p class="lead">Nearly every agent runs the same cycle. Pick a task and press play to watch it step through.</p>
+    <div class="loop">
+      <div class="steps" id="steps">
+        <div class="step" data-k="goal"><span class="n">1</span><div>Goal<small>Receive the task</small></div></div>
+        <div class="step" data-k="think"><span class="n">2</span><div>Think<small>Plan the next step</small></div></div>
+        <div class="step" data-k="act"><span class="n">3</span><div>Act<small>Call a tool</small></div></div>
+        <div class="step" data-k="obs"><span class="n">4</span><div>Observe<small>Read the result</small></div></div>
+        <div class="step" data-k="done"><span class="n">5</span><div>Finish<small>Or loop back to Think</small></div></div>
+      </div>
+      <div>
+        <div class="console" id="console"><div class="row" style="color:#6b6f7c">// Press "Run agent" to start</div></div>
+        <div class="controls">
+          <select id="scenario">
+            <option value="weather">Plan a picnic</option>
+            <option value="bug">Fix a failing test</option>
+            <option value="research">Research a topic</option>
+          </select>
+          <button class="primary" id="runBtn">▶ Run agent</button>
+          <button id="stepBtn">Step</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="parts">
+  <div class="wrap">
+    <h2>What an agent is made of</h2>
+    <p class="lead">Strip away the branding and most agents share the same building blocks.</p>
+    <div class="grid">
+      <div class="card"><div class="icon">🧠</div><h3>Model</h3><p>The language model that reads context and decides the next action.</p></div>
+      <div class="card"><div class="icon">🛠️</div><h3>Tools</h3><p>Functions the model can call: web search, code execution, file access, APIs, databases.</p></div>
+      <div class="card"><div class="icon">🗂️</div><h3>Memory</h3><p>Short-term context for the current task, plus optional long-term notes that persist between sessions.</p></div>
+      <div class="card"><div class="icon">🧭</div><h3>Planning</h3><p>Breaking a big goal into steps, and revising the plan when something unexpected happens.</p></div>
+      <div class="card"><div class="icon">🔁</div><h3>Control loop</h3><p>The code that runs the model, executes tool calls, and feeds results back in.</p></div>
+      <div class="card"><div class="icon">🛡️</div><h3>Guardrails</h3><p>Permissions, approvals, sandboxes, and limits that keep the agent's actions safe.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="patterns">
+  <div class="wrap">
+    <h2>Common patterns</h2>
+    <p class="lead">From a single loop to teams of cooperating agents.</p>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="single">Single agent</button>
+      <button class="tab" data-tab="workflow">Workflow</button>
+      <button class="tab" data-tab="multi">Multi-agent</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-single">
+      <div class="card">
+        <h3>One model, one loop, many tools</h3>
+        <p>The simplest and most common design. The model keeps calling tools until it decides it's done.</p>
+<pre class="code">while True:
+    reply = model(messages, tools=TOOLS)
+    if not reply.tool_calls:
+        return reply.text            # task finished
+    for call in reply.tool_calls:
+        result = run_tool(call.name, call.args)
+        messages.append(tool_result(call.id, result))</pre>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-workflow">
+      <div class="card">
+        <h3>Fixed steps, model inside each one</h3>
+        <p>You define the order of steps in code (e.g. extract → classify → draft → review). More predictable,
+           less autonomous. Great when the process is well known.</p>
+<pre class="code">data    = model("Extract key facts from: " + doc)
+label   = model("Classify this request: " + data)
+draft   = model(f"Write a {label} reply using: {data}")
+final   = model("Check this draft for errors: " + draft)</pre>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-multi">
+      <div class="card">
+        <h3>An orchestrator with specialist helpers</h3>
+        <p>A lead agent splits the work and hands pieces to sub-agents (researcher, coder, reviewer), then
+           combines their results. Useful for large tasks that can run in parallel.</p>
+<pre class="code">plan     = orchestrator.plan(goal)
+results  = parallel(subagent(task) for task in plan.tasks)
+answer   = orchestrator.combine(results)
+verified = reviewer.check(answer)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uses">
+  <div class="wrap">
+    <h2>Where agents are useful</h2>
+    <p class="lead">Agents shine on tasks with many steps, clear success criteria, and tools to check the work.</p>
+    <div class="grid">
+      <div class="card"><div class="icon">💻</div><h3>Software development</h3><p>Reading a codebase, writing changes, running tests, and fixing what breaks.</p></div>
+      <div class="card"><div class="icon">🔎</div><h3>Research</h3><p>Searching many sources, cross-checking facts, and writing a cited summary.</p></div>
+      <div class="card"><div class="icon">📊</div><h3>Data analysis</h3><p>Querying databases, cleaning data, running statistics, and building charts.</p></div>
+      <div class="card"><div class="icon">🎧</div><h3>Customer support</h3><p>Looking up orders, following policies, and escalating tricky cases to humans.</p></div>
+      <div class="card"><div class="icon">🗓️</div><h3>Personal assistance</h3><p>Sorting email, scheduling meetings, and preparing drafts for your approval.</p></div>
+      <div class="card"><div class="icon">⚙️</div><h3>Operations</h3><p>Monitoring systems, triaging alerts, and running routine fixes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="risks">
+  <div class="wrap">
+    <h2>Limits and risks</h2>
+    <p class="lead">More autonomy means more ways to go wrong. Good agents are designed with these in mind.</p>
+    <div class="grid">
+      <div class="card risk"><h3>Compounding errors</h3><p>A small mistake early on can snowball over many steps.</p></div>
+      <div class="card risk"><h3>Prompt injection</h3><p>Malicious text in a web page or document may try to hijack the agent.</p></div>
+      <div class="card risk"><h3>Unsafe actions</h3><p>Deleting data or sending messages should require human approval.</p></div>
+      <div class="card risk"><h3>Cost and speed</h3><p>Many model calls add up in time and money; not every task needs an agent.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <p class="lead">Quick answers to common questions.</p>
+    <details><summary>Is an AI agent conscious or self-aware?</summary>
+      <p>No. It's a model producing text in a loop, plus code that runs the tools it asks for. "Deciding" is a useful shorthand, not a claim about minds.</p></details>
+    <details><summary>Do I need a special model to build an agent?</summary>
+      <p>You need a model that supports tool use (function calling). Most modern large language models do.</p></details>
+    <details><summary>When should I NOT use an agent?</summary>
+      <p>When a single prompt or a simple fixed script does the job. Agents add cost, latency, and unpredictability — use them when the flexibility is worth it.</p></details>
+    <details><summary>How do I keep an agent safe?</summary>
+      <p>Give it the fewest tools and permissions it needs, run code in a sandbox, require approval for irreversible actions, log everything, and set step and budget limits.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Three files (HTML, CSS, JS) · no dependencies · works offline. Open <code>ai-agents.html</code> in any browser.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
