@@ -1,0 +1,12 @@
+# Secrets: real environment files (the .env.example templates stay tracked)
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
