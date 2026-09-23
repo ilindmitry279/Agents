@@ -32,17 +32,42 @@ It's a static website built with plain HTML, CSS, and JavaScript. It has no depe
 └── script.js    # Theme toggle, tabs, and the agent-loop simulation
 ```
 
-## Running it
+## Download and run locally
 
-Open `index.html` in any modern browser. You don't need a server.
+### 1. Get the code
 
-If you prefer to serve it locally:
+**Option A: clone with Git**
 
 ```bash
+git clone https://github.com/ilindmitry279/Agents.git
+cd Agents
+```
+
+**Option B: download a ZIP (no Git needed)**
+
+1. Open <https://github.com/ilindmitry279/Agents>.
+2. Click the green **Code** button, then **Download ZIP**.
+3. Unzip the file. This gives you a folder named `Agents-main`.
+
+### 2. Open the page
+
+Double-click `index.html`, or drag it into any modern browser (Chrome, Firefox, Edge, or Safari). That's all you need. There's nothing to install and no internet connection is required.
+
+### 3. (Optional) Serve it with a local web server
+
+Some browsers limit what pages opened straight from the disk (`file://`) can do. If something doesn't work, serve the folder instead. Run one of these commands from inside the project folder:
+
+```bash
+# Python 3
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000>.
+```bash
+# Node.js
+npx serve .
+```
+
+Then open <http://localhost:8000> for Python, or the address that `serve` prints for Node.js.
 
 ## Adding a scenario to the simulator
 
